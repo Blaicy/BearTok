@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
+import { API_URL } from "../config"; // Make sure config.js exports API_URL
 
 const LogIn = () => {
   const navigate = useNavigate();
@@ -15,7 +16,7 @@ const LogIn = () => {
     setError("");
 
     try {
-      const res = await fetch("http://localhost:5001/logIn", {
+      const res = await fetch(`${API_URL}/logIn`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
@@ -28,9 +29,10 @@ const LogIn = () => {
         localStorage.setItem("user", JSON.stringify(data.user));
         navigate(from, { replace: true });
       } else {
-        setError(data.message);
+        setError(data.message || "Login failed");
       }
-    } catch {
+    } catch (err) {
+      console.error(err);
       setError("Network error. Try again.");
     }
   };
@@ -54,9 +56,7 @@ const LogIn = () => {
         </p>
 
         {error && (
-          <p className="text-red-400 text-sm text-center mb-4">
-            {error}
-          </p>
+          <p className="text-red-400 text-sm text-center mb-4">{error}</p>
         )}
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-5">
@@ -71,12 +71,7 @@ const LogIn = () => {
               onChange={(e) => setEmail(e.target.value)}
               required
               placeholder="youremail@example.com"
-              className="
-                w-full p-3 rounded-lg
-                bg-white/20 placeholder-white/50
-                border border-white/20
-                focus:border-purple-300 outline-none
-              "
+              className="w-full p-3 rounded-lg bg-white/20 placeholder-white/50 border border-white/20 focus:border-purple-300 outline-none"
             />
           </div>
 
@@ -91,33 +86,20 @@ const LogIn = () => {
               onChange={(e) => setPassword(e.target.value)}
               required
               placeholder="••••••••"
-              className="
-                w-full p-3 rounded-lg
-                bg-white/20 placeholder-white/50
-                border border-white/20
-                focus:border-purple-300 outline-none
-              "
+              className="w-full p-3 rounded-lg bg-white/20 placeholder-white/50 border border-white/20 focus:border-purple-300 outline-none"
             />
           </div>
 
           <button
             type="submit"
-            className="
-              w-full py-3 rounded-full
-              bg-[#e9d7ff] text-[#3c1a5b]
-              font-semibold shadow-xl
-              hover:scale-105 active:scale-95 transition-all
-            "
+            className="w-full py-3 rounded-full bg-[#e9d7ff] text-[#3c1a5b] font-semibold shadow-xl hover:scale-105 active:scale-95 transition-all"
           >
             Log In
           </button>
 
           <p className="text-center text-white/70 text-sm mt-2">
             Don’t have an account?
-            <Link
-              to="/signUp"
-              className="text-[#e9d7ff] ml-1 font-medium"
-            >
+            <Link to="/signUp" className="text-[#e9d7ff] ml-1 font-medium">
               Sign Up
             </Link>
           </p>

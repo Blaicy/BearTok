@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
+import { API_URL } from "../config"; // Make sure config.js exports API_URL
 
 const CheckoutForm = ({ amount, order }) => {
   const stripe = useStripe();
@@ -9,26 +10,29 @@ const CheckoutForm = ({ amount, order }) => {
   const [email, setEmail] = useState("");
   const [method, setMethod] = useState("card");
 
+  // Stripe payment
   useEffect(() => {
     if (method !== "card" || !order) return;
 
     const createPaymentIntent = async () => {
-      const res = await fetch(
-        "http://localhost:5001/api/payments/create-payment-intent",
-        {
+      try {
+        const res = await fetch(`${API_URL}/api/payments/create-payment-intent`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ amount }),
-        }
-      );
+        });
 
-      const data = await res.json();
-      setClientSecret(data.clientSecret);
+        const data = await res.json();
+        setClientSecret(data.clientSecret);
+      } catch (err) {
+        console.error("Stripe payment intent error:", err);
+      }
     };
 
     createPaymentIntent();
   }, [method, amount, order]);
 
+  // PayPal payment
   useEffect(() => {
     if (method !== "paypal" || !order) return;
 
@@ -36,15 +40,13 @@ const CheckoutForm = ({ amount, order }) => {
     if (container) container.innerHTML = "";
 
     const script = document.createElement("script");
-    script.src = `https://www.paypal.com/sdk/js?client-id=YOUR_PAYPAL_CLIENT_ID&currency=USD`;
+    script.src = `https://www.paypal.com/sdk/js?client-id=${process.env.REACT_APP_PAYPAL_CLIENT_ID}&currency=USD`;
     script.async = true;
     script.onload = () => {
       window.paypal?.Buttons({
         createOrder: (_, actions) =>
           actions.order.create({
-            purchase_units: [
-              { amount: { value: (amount / 100).toFixed(2) } },
-            ],
+            purchase_units: [{ amount: { value: (amount / 100).toFixed(2) } }],
           }),
         onApprove: async (_, actions) => {
           const details = await actions.order.capture();
@@ -58,27 +60,34 @@ const CheckoutForm = ({ amount, order }) => {
     document.body.appendChild(script);
   }, [method, amount, order]);
 
+  // Save order to backend
   const saveOrder = async (paymentDetails, paymentMethod = "card") => {
-    await fetch("/api/orders/create", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        orderId: order.isNew ? null : order._id,
-        userId: localStorage.getItem("userId"),
-        itemName: order.itemName,
-        size: order.size,
-        quantity: order.quantity,
-        price: order.price,
-        paymentMethod,
-        paymentStatus: "paid",
-        stripePaymentIntentId: paymentDetails?.id || null,
-        paypalOrderId: paymentDetails?.id || null,
-      }),
-    });
+    try {
+      await fetch(`${API_URL}/api/orders/create`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          orderId: order.isNew ? null : order._id,
+          userId: JSON.parse(localStorage.getItem("user"))?._id,
+          itemName: order.itemName,
+          size: order.size,
+          quantity: order.quantity,
+          price: order.price,
+          paymentMethod,
+          paymentStatus: "paid",
+          stripePaymentIntentId: paymentDetails?.id || null,
+          paypalOrderId: paymentDetails?.id || null,
+        }),
+      });
 
-    window.location.href = "/orders";
+      window.location.href = "/orders";
+    } catch (err) {
+      console.error("Save order error:", err);
+      alert("Failed to save order.");
+    }
   };
 
+  // Handle Stripe card payment
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!stripe || !elements) return;
@@ -88,8 +97,9 @@ const CheckoutForm = ({ amount, order }) => {
       payment_method: { card, billing_details: { email } },
     });
 
-    if (result.error) alert("Payment failed: " + result.error.message);
-    else if (result.paymentIntent.status === "succeeded") {
+    if (result.error) {
+      alert("Payment failed: " + result.error.message);
+    } else if (result.paymentIntent.status === "succeeded") {
       await saveOrder(result.paymentIntent, "card");
       alert("Payment successful via Card!");
     }
@@ -99,9 +109,7 @@ const CheckoutForm = ({ amount, order }) => {
     <div className="w-full max-w-md mx-auto">
       {/* Email */}
       <div className="mb-6">
-        <label className="block text-sm font-medium mb-2">
-          Email address
-        </label>
+        <label className="block text-sm font-medium mb-2">Email address</label>
         <input
           type="email"
           className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
@@ -114,7 +122,6 @@ const CheckoutForm = ({ amount, order }) => {
       {/* Payment Method */}
       <div className="mb-6">
         <p className="text-sm font-medium mb-3">Payment method</p>
-
         <div className="flex flex-col sm:flex-row gap-3">
           <label className="flex items-center gap-2 border rounded-lg p-3 cursor-pointer w-full">
             <input
@@ -142,14 +149,11 @@ const CheckoutForm = ({ amount, order }) => {
       {method === "card" && (
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium mb-2">
-              Card details
-            </label>
+            <label className="block text-sm font-medium mb-2">Card details</label>
             <div className="p-3 border rounded-lg">
               <CardElement />
             </div>
           </div>
-
           <button
             type="submit"
             disabled={!stripe || !clientSecret}
@@ -161,12 +165,7 @@ const CheckoutForm = ({ amount, order }) => {
       )}
 
       {/* PayPal */}
-      {method === "paypal" && (
-        <div
-          id="paypal-button-container"
-          className="mt-6"
-        />
-      )}
+      {method === "paypal" && <div id="paypal-button-container" className="mt-6" />}
     </div>
   );
 };

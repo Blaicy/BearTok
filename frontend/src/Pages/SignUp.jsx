@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
+import { API_URL } from "../config"; // Make sure this exists
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -17,8 +18,14 @@ const SignUp = () => {
     setError("");
 
     try {
-      const result = await axios.post("http://localhost:5001/signUp", { name, email, password });
+      const result = await axios.post(`${API_URL}/signUp`, {
+        name,
+        email,
+        password,
+      });
+
       localStorage.setItem("token", result.data.token);
+      localStorage.setItem("user", JSON.stringify(result.data.user));
       navigate(from, { replace: true });
     } catch (err) {
       setError(err.response?.data?.message || "Signup failed. Please try again.");
