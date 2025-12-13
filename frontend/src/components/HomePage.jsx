@@ -10,7 +10,7 @@ const HomePage = () => {
       {/* Shop Section */}
       <section
         className="relative w-full bg-cover bg-center"
-        style={{ backgroundImage: "url(images/Bg1.jpg)" }}
+        style={{ backgroundImage: "url(/images/Bg1.jpg)" }}
       >
         <div className="absolute inset-0 bg-black/30" />
 
