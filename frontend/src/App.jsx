@@ -35,8 +35,6 @@ function App() {
         <Route path="/logIn" element={<LogIn />} />
         <Route path="/signUp" element={<SignUp />} />
         <Route path="/profile" element={<Profile />} />
-
-        {/* Protected pages */}
         
         <Route path="/shopKit" element={
           <PrivateRoute>
