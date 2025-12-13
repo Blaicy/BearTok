@@ -4,7 +4,5 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
-  // 💡 Ensure the repository name is correct and you have the
-  //    leading slash and trailing slash!
   base: '/BearTok/',
 });
