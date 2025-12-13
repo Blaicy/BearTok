@@ -32,7 +32,7 @@ const ShopKit = () => {
       {/* Background */}
       <div
         className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: "url(/images/Bg2.jpg)" }}
+        style={{ backgroundImage: `url(${import.meta.env.BASE_URL}images/Bg2.jpg)` }}
       />
       <div className="absolute inset-0 bg-black/30" />
 

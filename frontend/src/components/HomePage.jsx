@@ -10,7 +10,9 @@ const HomePage = () => {
       {/* Shop Section */}
       <section
         className="relative w-full bg-cover bg-center"
-        style={{ backgroundImage: "url(/images/Bg1.jpg)" }}
+        style={{ 
+          backgroundImage: `url(${import.meta.env.BASE_URL}images/Bg1.jpg)` 
+        }} 
       >
         <div className="absolute inset-0 bg-black/30" />
 
@@ -71,7 +73,7 @@ const HomePage = () => {
       {/* What's Included */}
       <section
         className="relative w-full bg-cover bg-center"
-        style={{ backgroundImage: "url(/images/Bg1.jpg)" }}
+        style={{ backgroundImage: `url(${import.meta.env.BASE_URL}images/Bg1.jpg)` }}
       >
         <div className="absolute inset-0 bg-black/40" />
 
@@ -100,13 +102,13 @@ const HomePage = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 w-full">
               <motion.img
                 whileHover={{ scale: 1.05 }}
-                src="/images/Item1.jpg"
+                src = {`${import.meta.env.BASE_URL}images/Item1.jpg`} 
                 alt="Kit Item"
                 className="w-full h-64 sm:h-72 object-cover rounded-2xl shadow-2xl border border-white/20"
               />
               <motion.img
                 whileHover={{ scale: 1.05 }}
-                src="/images/Item3.jpg"
+                src = {`${import.meta.env.BASE_URL}images/Item3.jpg`} 
                 alt="Kit Item"
                 className="w-full h-64 sm:h-72 object-cover rounded-2xl shadow-2xl border border-white/20"
               />
