@@ -2,11 +2,15 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
+
+
 const ShopKit = () => {
   const navigate = useNavigate();
   const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState(null);
 
+  const base = import.meta.env.BASE_URL;
+  
   const priceMap = { "23": 45, "33": 65, "53": 85 };
   const pricePerKit = selectedSize ? priceMap[selectedSize] : 0;
 
@@ -41,7 +45,7 @@ const ShopKit = () => {
       <div className="relative z-10 bg-black/70 backdrop-blur-xl border p-4 sm:p-6 md:p-8 rounded-3xl shadow-lg max-w-3xl w-full">
         <div className="flex flex-col md:flex-row gap-6 items-start">
           <img
-            src="/images/Item1.jpg"
+            src={`${base}images/Item1.jpg`}
             className="w-full sm:w-80 h-56 object-cover rounded-2xl border"
           />
 

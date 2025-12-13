@@ -11,15 +11,15 @@ const Checkout = () => {
     const orderFromShop = location.state?.product;
     const orderId = searchParams.get("orderId");
 
-    if (orderFromShop) {
-      setOrder({ ...orderFromShop, isNew: true });
-    } else if (orderId) {
-      fetch(`/api/orders/single/${orderId}`)
-        .then((res) => res.json())
-        .then((data) => setOrder({ ...data, isNew: false }))
-        .catch(() => alert("Failed to load order"));
-    }
-  }, [location.state, searchParams]);
+     if (orderFromShop) {
+    setOrder({ ...orderFromShop, isNew: true });
+  } else if (orderId) {
+    fetch(`/api/orders/single/${orderId}`)
+      .then((res) => res.json())
+      .then((data) => setOrder({ ...data, isNew: false }))
+      .catch(() => alert("Failed to load order"));
+  }
+}, [location.state?.product, searchParams]);
 
   if (!order)
     return (
@@ -30,6 +30,14 @@ const Checkout = () => {
 
   return (
     <div className="min-h-screen px-4 sm:px-6 py-8 flex items-start justify-center">
+      <div
+        className="relative w-full min-h-screen bg-cover bg-center"
+        style={{
+          // FIX APPLIED HERE: Used import.meta.env.BASE_URL instead of the undefined 'base'
+          backgroundImage: `url(${import.meta.env.BASE_URL}images/Bg1.jpg)`,
+        }}
+      ></div>
+        <div className="absolute inset-0 bg-black/40" />
       <div className="w-full max-w-3xl">
         <h1 className="text-2xl sm:text-3xl font-bold mb-6 text-center sm:text-left">
           Checkout
