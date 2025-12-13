@@ -1,1 +1,1 @@
-export const API_URL = "https://beartok-backend.onrender.com";
+export const API_URL = "https://beartok.onrender.com"
