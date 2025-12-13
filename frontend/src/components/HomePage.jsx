@@ -108,14 +108,13 @@ const HomePage = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
-              <motion.img
-                whileHover={{ scale: 1.05 }}
+              <img
                 src={`${base}images/Item1.jpg`}
                 alt="Kit Item"
                 className="w-full h-64 sm:h-72 object-cover rounded-2xl shadow-2xl border border-white/20"
               />
-              <motion.img
-                whileHover={{ scale: 1.05 }}
+              <img
+  
                 src={`${base}images/Item3.jpg`}
                 alt="Kit Item"
                 className="w-full h-64 sm:h-72 object-cover rounded-2xl shadow-2xl border border-white/20"
