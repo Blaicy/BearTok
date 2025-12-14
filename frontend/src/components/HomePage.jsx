@@ -51,7 +51,7 @@ const HomePage = () => {
                 alt="Small Kit"
                 className="object-cover border shadow-md w-36 h-36 sm:w-44 sm:h-44 rounded-2xl border-white/20"
               />
-              <span className="font-mono sm:text-base text-black/80">
+              <span className="font-mono font-bold sm:text-base text-black/80">
                 T-shirts available too
               </span>
             </div>
