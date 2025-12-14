@@ -49,7 +49,7 @@ const HomePage = () => {
               <img
                 src={`${base}images/Item3.jpg`}
                 alt="Small Kit"
-                className="border shadow-md w-36 h-36 sm:w-44 sm:h-44 rounded-2xl border-white/20"
+                className="object-cover border shadow-md w-36 h-36 sm:w-44 sm:h-44 rounded-2xl border-white/20"
               />
               <span className="font-mono sm:text-base text-black/80">
                 T-shirts available too
