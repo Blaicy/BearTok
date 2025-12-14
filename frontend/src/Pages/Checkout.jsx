@@ -1,72 +1,69 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useSearchParams } from "react-router-dom";
-import CheckoutForm from "./CheckOutForm";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+import CheckoutForm from "./CheckoutForm";
+import { API_URL } from "../config";
+
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
 const Checkout = () => {
   const location = useLocation();
   const [searchParams] = useSearchParams();
   const [order, setOrder] = useState(null);
+  const [clientSecret, setClientSecret] = useState("");
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const orderFromShop = location.state?.product;
     const orderId = searchParams.get("orderId");
 
-     if (orderFromShop) {
-    setOrder({ ...orderFromShop, isNew: true });
-  } else if (orderId) {
-    fetch(`/api/orders/single/${orderId}`)
-      .then((res) => res.json())
-      .then((data) => setOrder({ ...data, isNew: false }))
-      .catch(() => alert("Failed to load order"));
-  }
-}, [location.state?.product, searchParams]);
+    const initPayment = async (orderData) => {
+      try {
+        const res = await fetch(
+          `${API_URL}/api/payments/create-payment-intent`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              amount: Math.round(orderData.price * 100),
+              orderId: orderData.isNew ? null : orderData._id,
+            }),
+          }
+        );
 
-  if (!order)
-    return (
-      <div className="min-h-screen flex items-center justify-center text-lg">
-        Loading checkout...
-      </div>
-    );
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message);
+
+        setOrder(orderData);
+        setClientSecret(data.clientSecret);
+      } catch (err) {
+        setError(err.message);
+      }
+    };
+
+    if (orderFromShop) {
+      initPayment({ ...orderFromShop, isNew: true });
+    } else if (orderId) {
+      fetch(`${API_URL}/api/orders/single/${orderId}`)
+        .then(res => res.json())
+        .then(data => initPayment({ ...data, isNew: false }))
+        .catch(() => setError("Failed to load order"));
+    } else {
+      setError("No order found");
+    }
+  }, [location.state, searchParams]);
+
+  if (error) return <div className="text-red-600">{error}</div>;
+  if (!clientSecret || !order) return <div>Loading checkout…</div>;
 
   return (
-    <div className="min-h-screen px-4 sm:px-6 py-8 flex items-start justify-center">
-      <div
-        className="relative w-full min-h-screen bg-cover bg-center"
-        style={{
-          // FIX APPLIED HERE: Used import.meta.env.BASE_URL instead of the undefined 'base'
-          backgroundImage: `url(${import.meta.env.BASE_URL}images/Bg1.jpg)`,
-        }}
-      ></div>
-        <div className="absolute inset-0 bg-black/40" />
-      <div className="w-full max-w-3xl">
-        <h1 className="text-2xl sm:text-3xl font-bold mb-6 text-center sm:text-left">
-          Checkout
-        </h1>
-
-        <div className="bg-white shadow-lg rounded-2xl p-5 sm:p-6 mb-6">
-          <h2 className="text-lg font-semibold mb-4">Order Summary</h2>
-
-          <div className="space-y-1 text-sm sm:text-base">
-            <p>
-              <span className="font-medium">Product:</span> {order.itemName}
-            </p>
-            <p>
-              <span className="font-medium">Size:</span> {order.size}cm
-            </p>
-            <p>
-              <span className="font-medium">Quantity:</span> {order.quantity}
-            </p>
-            <p className="text-lg font-semibold mt-3">
-              Total: ${order.price}
-            </p>
-          </div>
-        </div>
-
-        <div className="bg-white shadow-lg rounded-2xl p-5 sm:p-6">
-          <CheckoutForm amount={order.price * 100} order={order} />
-        </div>
-      </div>
-    </div>
+    <Elements
+      stripe={stripePromise}
+      options={{ clientSecret }}
+    >
+      <CheckoutForm order={order} clientSecret={clientSecret} />
+    </Elements>
   );
 };
 

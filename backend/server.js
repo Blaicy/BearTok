@@ -1,24 +1,16 @@
-// --- server.js (Refactored) ---
+import dotenv from "dotenv";
+dotenv.config(); // MUST be first
 
-import express from 'express';
-import orderRoutes from './src/routes/orderRoutes.js';
-import { connectDB } from './src/config/db.js';
-
-// 1. IMPORT AND EXECUTE DOTENV FIRST
-import dotenv from 'dotenv';
-dotenv.config();
-
-// 2. INITIALIZE STRIPE HERE (Safely after the key is loaded)
-import Stripe from "stripe";
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
-// 3. EXPORT the initialized client so other files (like paymentRoutes.js) can use it
-export { stripe };
-
+import express from "express";
 import cors from "cors";
-import authRoutes from "./src/routes/authRoutes.js";
-import userRoutes from './src/routes/userRoutes.js';
-import paymentRoutes from './src/routes/paymentRoutes.js'
 
+import { connectDB } from "./src/config/db.js";
+import authRoutes from "./src/routes/authRoutes.js";
+import userRoutes from "./src/routes/userRoutes.js";
+import orderRoutes from "./src/routes/orderRoutes.js";
+import paymentRoutes from "./src/routes/paymentRoutes.js";
+
+import stripe from "./src/config/stripe.js";
 
 const app = express();
 const PORT = process.env.PORT || 5001;
@@ -36,8 +28,7 @@ app.use("/api/orders", orderRoutes);
 app.use("/", userRoutes);
 app.use("/api/payments", paymentRoutes);
 
-
 // start server
 app.listen(PORT, () => {
-  console.log(`Server running on ${PORT}`);
+  console.log(`Server running on ${PORT}`);
 });

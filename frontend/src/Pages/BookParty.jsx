@@ -3,7 +3,6 @@ import React, { useState } from "react";
 const BookParty = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [contact, setContact] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -11,49 +10,37 @@ const BookParty = () => {
   };
 
   return (
-    <div className="relative min-h-screen w-full flex items-center justify-center px-4 sm:px-6 py-12">
+    <div className="relative flex items-center justify-center w-full min-h-screen px-4 py-12 sm:px-6">
       {/* Background */}
       <div
-        className="absolute inset-0 bg-cover bg-center"
+        className="absolute inset-0 bg-center bg-cover"
         style={{ backgroundImage: `url(${import.meta.env.BASE_URL}images/Bg2.jpg)` }}
       />
       <div className="absolute inset-0 bg-black/30" />
 
       {/* Content */}
       <div className="relative z-10 w-full max-w-md">
-        <div className="text-center mb-6 px-2">
-          <h1 className="text-3xl sm:text-4xl font-bold text-white mb-2">
+        <div className="px-2 mb-6 text-center">
+          <h1 className="mb-2 text-3xl font-bold text-white sm:text-4xl">
             Event Booking
           </h1>
-          <p className="text-sm sm:text-base text-white/80">
-            Join our fun event from 20th–25th Feb at Quails Spring Mall.
+          <p className="text-sm sm:text-base text-white/80 ">
+            Join our fun event!
           </p>
         </div>
 
         <form
           onSubmit={handleSubmit}
-          className="
-            bg-black/70 backdrop-blur-lg
-            border border-white/20
-            p-6 sm:p-8
-            rounded-2xl shadow-2xl
-            text-white
-            flex flex-col gap-5
-          "
+          className="flex flex-col gap-5 p-6 text-white border shadow-2xl bg-black/70 backdrop-blur-lg border-white/20 sm:p-8 rounded-2xl"
         >
           {/* Name */}
           <div>
-            <label className="font-semibold text-white/90 text-sm sm:text-base">
+            <label className="text-sm font-semibold text-white/90 sm:text-base">
               Your Name
             </label>
             <input
               type="text"
-              className="
-                w-full mt-2 p-3 rounded-lg
-                bg-white/20 placeholder-white/50
-                border border-white/20
-                focus:border-purple-300 outline-none
-              "
+              className="w-full p-3 mt-2 border rounded-lg outline-none bg-white/20 placeholder-white/50 border-white/20 focus:border-purple-300"
               placeholder="Enter your name"
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -63,17 +50,12 @@ const BookParty = () => {
 
           {/* Email */}
           <div>
-            <label className="font-semibold text-white/90 text-sm sm:text-base">
+            <label className="text-sm font-semibold text-white/90 sm:text-base">
               Email
             </label>
             <input
               type="email"
-              className="
-                w-full mt-2 p-3 rounded-lg
-                bg-white/20 placeholder-white/50
-                border border-white/20
-                focus:border-purple-300 outline-none
-              "
+              className="w-full p-3 mt-2 border rounded-lg outline-none bg-white/20 placeholder-white/50 border-white/20 focus:border-purple-300"
               placeholder="Enter your email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
