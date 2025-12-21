@@ -111,12 +111,15 @@ const ShopKit = () => {
             {/* Paint Colors */}
             <span className="block mt-2 text-sm font-semibold">Select Paint Colors:</span>
             <div className="flex flex-wrap gap-2 mt-1">
-              {["pink", "yellow", "blue", "red"].map((color) => {
+              {["pink", "yellow", "blue", "red","green","black","purple"].map((color) => {
                 const colorClasses = {
                   pink: "bg-pink-500",
                   yellow: "bg-yellow-400",
                   blue: "bg-blue-500",
                   red: "bg-red-500",
+                  green: "bg-green-500",
+                  black: "bg-black",
+                  purple: "bg-purple-500"
                 };
                 const isSelected = kitColors.includes(color);
                 return (
