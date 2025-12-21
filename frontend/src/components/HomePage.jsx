@@ -21,36 +21,29 @@ const HomePage = () => {
           Shop for Kits!
         </h2>
 
-        {/* Parent Container: changed sm:items-start to sm:items-center */}
-<div className="flex flex-col items-center gap-8 sm:flex-row sm:items-center sm:gap-12">
-  
-  {/* Left side: main image */}
-  <div className="w-full sm:w-1/2">
-    <img
-      src={`${base}images/Item1.jpg`}
-      alt="Creativity Kit"
-      className="object-cover w-full h-64 border shadow-lg sm:h-80 rounded-2xl border-white/20"
-    />
-  </div>
+      <div className="flex flex-col items-center gap-8 sm:flex-row sm:items-center sm:gap-12">
+        
+        <div className="w-full sm:w-1/2">
+          <img
+            src={`${base}images/Item1.jpg`}
+            alt="Creativity Kit"
+            className="object-cover w-full h-64 border shadow-lg sm:h-80 rounded-2xl border-white/20"/>
+        </div>
 
-  {/* Right side: Text and Button */}
-  {/* We keep sm:items-start so the text stays left-aligned, but the whole block is now vertically centered */}
-  <div className="flex flex-col items-center w-full mt-6 text-center sm:items-start sm:text-left sm:w-1/2 sm:mt-0">
-    <p className="mb-6 font-mono text-base text-black sm:text-lg md:text-xl">
-      Unlock the fun — grab your Creativity Kit now!
-    </p>
-    <button
-      className="px-6 py-3 mb-6 font-semibold text-black transition-all border-2 border-black rounded-full shadow-lg bg-amber-500 hover:bg-white hover:text-black hover:scale-105 active:scale-95"
-      onClick={() => navigate("/shopKit")}
-    >
-      Shop Now
-    </button>
-  </div>
-</div>
+        <div className="flex flex-col items-center w-full mt-6 text-center sm:items-start sm:text-left sm:w-1/2 sm:mt-0">
+          <p className="mb-6 font-mono text-base text-black sm:text-lg md:text-xl">
+            Unlock the fun — grab your Creativity Kit now!
+          </p>
+          <button
+            className="px-6 py-3 mb-6 font-semibold text-black transition-all border-2 border-black rounded-full shadow-lg bg-amber-500 hover:bg-white hover:text-black hover:scale-105 active:scale-95"
+            onClick={() => navigate("/shopKit")}>
+            Shop Now
+          </button>
+        </div>
       </div>
+    </div>
         </section>
 
-      {/* Event Section */}
       <section className="px-4 text-center bg-white sm:px-6 py-14">
         <div className="max-w-3xl mx-auto space-y-3">
           <h1 className="font-serif text-3xl font-extrabold text-black sm:text-4xl md:text-5xl">
@@ -70,8 +63,7 @@ const HomePage = () => {
           </button>
         </div>
       </section>
-
-      {/* What's Included */}
+      
       <section
         className="relative w-full min-h-screen bg-center bg-cover"
         style={{
