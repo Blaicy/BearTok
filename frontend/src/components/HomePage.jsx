@@ -21,42 +21,32 @@ const HomePage = () => {
           Shop for Kits!
         </h2>
 
-        <div className="flex flex-col items-center gap-8 sm:flex-row sm:items-start sm:gap-12">
-          
-          {/* Left side: main image */}
-          <div className="w-full sm:w-1/2">
-            <img
-              src={`${base}images/Item1.jpg`}
-              alt="Creativity Kit"
-              className="object-cover w-full h-64 border shadow-lg sm:h-80 rounded-2xl border-white/20"
-            />
-          </div>
+        {/* Parent Container: changed sm:items-start to sm:items-center */}
+<div className="flex flex-col items-center gap-8 sm:flex-row sm:items-center sm:gap-12">
+  
+  {/* Left side: main image */}
+  <div className="w-full sm:w-1/2">
+    <img
+      src={`${base}images/Item1.jpg`}
+      alt="Creativity Kit"
+      className="object-cover w-full h-64 border shadow-lg sm:h-80 rounded-2xl border-white/20"
+    />
+  </div>
 
-          {/* Right side: text + button + smaller image with note */}
-          <div className="flex flex-col items-center w-full mt-6 text-center sm:items-start sm:text-left sm:w-1/2 sm:mt-0">
-            <p className="mb-6 font-mono text-base text-black sm:text-lg md:text-xl">
-              Unlock the fun — grab your Creativity Kit now!
-            </p>
-            <button
-              className="px-6 py-3 mb-6 font-semibold text-black transition-all border-2 border-black rounded-full shadow-lg bg-amber-500 hover:bg-white hover:text-black hover:scale-105 active:scale-95"
-              onClick={() => navigate("/shopKit")}
-            >
-              Shop Now
-            </button>
-
-            {/* Smaller image with note */}
-            <div className="flex items-center gap-4">
-              <img
-                src={`${base}images/Item3.jpg`}
-                alt="Small Kit"
-                className="object-cover border shadow-md w-36 h-36 sm:w-44 sm:h-44 rounded-2xl border-white/20"
-              />
-              <span className="font-mono font-bold sm:text-base text-black/80">
-                T-shirts available too
-              </span>
-            </div>
-          </div>
-        </div>
+  {/* Right side: Text and Button */}
+  {/* We keep sm:items-start so the text stays left-aligned, but the whole block is now vertically centered */}
+  <div className="flex flex-col items-center w-full mt-6 text-center sm:items-start sm:text-left sm:w-1/2 sm:mt-0">
+    <p className="mb-6 font-mono text-base text-black sm:text-lg md:text-xl">
+      Unlock the fun — grab your Creativity Kit now!
+    </p>
+    <button
+      className="px-6 py-3 mb-6 font-semibold text-black transition-all border-2 border-black rounded-full shadow-lg bg-amber-500 hover:bg-white hover:text-black hover:scale-105 active:scale-95"
+      onClick={() => navigate("/shopKit")}
+    >
+      Shop Now
+    </button>
+  </div>
+</div>
       </div>
         </section>
 
