@@ -6,6 +6,8 @@ import { loadStripe } from "@stripe/stripe-js";
 import HomePage from "./components/HomePage";
 import Layout from "./components/Layout";
 import PrivateRoute from "./components/PrivateRoute";
+import About from "./components/About";
+import Contact from "./components/Contact";
 import BookParty from "./Pages/BookParty";
 import Checkout from "./Pages/Checkout";
 import ShopKit from "./Pages/ShopKit";
@@ -42,8 +44,11 @@ function App() {
           <Route path="/logIn" element={<LogIn />} />
           <Route path="/signUp" element={<SignUp />} />
           <Route path="/shopKit" element={<ShopKit />} />
+          <Route path="/checkOut" element={<Checkout />} />
           <Route path="/bookParty" element={<BookParty />} />
           <Route path="/orders" element={<Orders />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
 
           <Route
             path="/profile"
@@ -53,18 +58,7 @@ function App() {
               </PrivateRoute>
             }
           />
-          <Route
-          path="/checkout"
-          element={
-            <PrivateRoute>
-              <Elements stripe={stripePromise}>
-                <Checkout />
-              </Elements>
-            </PrivateRoute>
-          }
-        />
-
-          {/* Catch-all */}
+          
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Elements>

@@ -20,7 +20,7 @@ const Navbar = () => {
           <Link to="/shopKit" className="btn btn-ghost text-lg hover:bg-red-400">Shop Kits</Link>
           <Link to="/bookParty" className="btn btn-ghost text-lg hover:bg-red-400">Events</Link>
           <Link to="/orders" className="btn btn-ghost text-lg hover:bg-red-400">My Orders</Link>
-          <Link to="/profile" className="btn btn-ghost text-lg hover:bg-red-400">Profile</Link>
+          <Link to="/contact" className="btn btn-ghost text-lg hover:bg-red-400">Contact</Link>
         </div>
 
         {/* Mobile Menu Button */}
